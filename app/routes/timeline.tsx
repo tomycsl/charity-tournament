@@ -14,7 +14,7 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export async function loader() {
+export async function clientLoader() {
   const MATCHES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLWTwqaGJ0x1frdwUY_f9MeUjNchwk-rved49nv--GyIjotENFWZ7ED5HBnieFwVz4o43YKKhXFDcx/pub?gid=457745355&single=true&output=csv";
   const response = await fetch(MATCHES_CSV_URL);
   const rawText = await response.text();
@@ -56,8 +56,8 @@ export default function Timeline() {
               {/* Timeline Connector Node Indicator */}
               <div
                 className={`absolute -left-[27px] top-1.5 w-3 h-3 rounded-full border-2 bg-white transition-colors duration-300 ${isSpecialEvent
-                    ? 'border-amber-500 ring-4 ring-amber-50'
-                    : 'border-emerald-500 group-hover:bg-emerald-500'
+                  ? 'border-amber-500 ring-4 ring-amber-50'
+                  : 'border-emerald-500 group-hover:bg-emerald-500'
                   }`}
               />
 

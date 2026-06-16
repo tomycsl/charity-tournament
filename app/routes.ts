@@ -10,6 +10,6 @@ export default [
     route("fixture/women/group", "routes/fixture-women-group.tsx"),
     route("fixture/women/playoffs", "routes/fixture-women-playoffs.tsx")
   ]),
-  route("/timeline", "routes/timeline.tsx")
+  route("/timeline", "routes/timeline.tsx"),
 ] satisfies RouteConfig;
 

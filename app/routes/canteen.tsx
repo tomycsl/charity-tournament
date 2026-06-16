@@ -15,7 +15,7 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export async function loader() {
+export async function clientLoader() {
   const MENU_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLWTwqaGJ0x1frdwUY_f9MeUjNchwk-rved49nv--GyIjotENFWZ7ED5HBnieFwVz4o43YKKhXFDcx/pub?gid=1199963315&single=true&output=csv";
   const response = await fetch(MENU_CSV_URL);
   const rawText = await response.text();

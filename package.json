@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build && cp dist/index.html dist/404.html",
-    "dev": "vite",
-    "preview": "vite preview"
+    "dev": "react-router dev",
+    "build": "react-router typegen && tsc && react-router build",
+    "start": "react-router-serve ./build/server/index.js"
   },
   "dependencies": {
     "@react-router/node": "7.16.0",

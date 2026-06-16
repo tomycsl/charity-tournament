@@ -1,7 +1,7 @@
 import { Outlet, NavLink, useLocation, useLoaderData } from 'react-router';
 import { type TournamentWorkbook, type Match } from '../types/tournament.types';
 
-export async function loader(): Promise<TournamentWorkbook> {
+export async function clientLoader(): Promise<TournamentWorkbook> {
   const SPREADSHEET_ID = "12tGswY3H541_NTCQJPslBS93IscO3UnX__sje1Bc69Q";
   const API_KEY = "AIzaSyBqMQJPxjmapeDtXB8RD-TIx0Oj7riM_Rk";
 
