@@ -1,7 +1,7 @@
 import type { Config } from "@react-router/dev/config";
 
 export default {
-  basename: "/charity-cup-2026/",
+  basename: "/charity-tournament/",
   ssr: false,
   future: {
     v8_middleware: true,
