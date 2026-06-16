@@ -42,7 +42,7 @@ jobs:
       - name: Upload Compiled Static Assets Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './build/client'
 
       - name: Deploy Compiled Bundle Build to Live Environment
         id: deployment
