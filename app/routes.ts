@@ -4,6 +4,7 @@ export default [
   route("/", "routes/home.tsx"),
   route("/canteen", "routes/canteen.tsx"),
   route("/cause", "routes/cause.tsx"),
+  route("/rules", "routes/rules.tsx"),
   layout("./fixture-layout/fixture-layout.tsx", [
     route("fixture/men/:groupId", "routes/fixture-men-group.tsx"),
     route("fixture/men/playoffs", "routes/fixture-men-playoffs.tsx"),

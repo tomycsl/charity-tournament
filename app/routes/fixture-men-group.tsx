@@ -2,6 +2,7 @@ import { useParams, useOutletContext } from 'react-router';
 import type { TournamentWorkbook } from '~/types/tournament.types';
 import MatchCard from '~/match-card/match-card';
 import type { Match } from '~/types/tournament.types';
+import TeamBadge from '~/components/team-badge';
 
 export default function MenGroupPage() {
   const { groupId } = useParams<{ groupId: string }>();
@@ -62,7 +63,8 @@ export default function MenGroupPage() {
                 return (
                   <tr key={team.Team || index} className={`transition-colors ${rowBgClass}`}>
                     <td className="py-2.5 pl-2 font-mono font-bold">{position}</td>
-                    <td className="py-2.5 font-bold truncate max-w-[150px]">
+                    <td className="py-2.5 font-bold truncate max-w-[150px] flex">
+                      <TeamBadge teamName={team.Team} className="w-4 h-4 mr-2" />
                       {team.Team} {statusIcon}
                     </td>
                     <td className="py-2.5 text-center font-mono text-slate-500">{team.GD || 0}</td>

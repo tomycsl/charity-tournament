@@ -2,6 +2,7 @@ import { useOutletContext } from 'react-router';
 import type { TournamentWorkbook } from '~/types/tournament.types';
 import MatchCard from '~/match-card/match-card';
 import type { Match } from '~/types/tournament.types';
+import TeamBadge from '~/components/team-badge';
 
 export default function WomenGroupPage() {
   const workbook = useOutletContext<TournamentWorkbook>();
@@ -51,7 +52,8 @@ export default function WomenGroupPage() {
                     <td className="py-2.5 pl-2 font-mono font-bold">
                       {position}
                     </td>
-                    <td className="py-2.5 font-bold truncate max-w-[150px]">
+                    <td className="py-2.5 font-bold truncate max-w-[150px] flex">
+                      <TeamBadge teamName={team.Team} className="w-4 h-4 mr-2" />
                       {team.Team} {isQualified && <span className="text-emerald-600 ml-1">⭐</span>}
                     </td>
                     <td className="py-2.5 text-center font-mono text-slate-500">

@@ -1,5 +1,4 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 import { Link } from "react-router";
 
 export function meta({ }: Route.MetaArgs) {
@@ -24,19 +23,6 @@ export default function Home() {
         <p className="text-sm text-slate-500 mt-2 leading-relaxed">
           Welcome to the annual Charity Tournament. Track your group positions, check upcoming fixtures, and review the food stand menu directly from your phone all day.
         </p>
-      </div>
-
-      {/* Real-time Status Alert Banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-3.5 shadow-sm">
-        <span className="text-2xl animate-bounce">📢</span>
-        <div>
-          <h4 className="text-xs font-black uppercase tracking-wider text-amber-800">
-            Live Tournament Status
-          </h4>
-          <p className="text-sm font-medium text-amber-900 mt-0.5">
-            Group Stages are currently active. Check the fixtures tab for pitch assignments.
-          </p>
-        </div>
       </div>
 
       {/* Quick Dashboard Info Metrics Grid */}
@@ -104,6 +90,21 @@ export default function Home() {
             <div className="text-left">
               <h4 className="font-bold text-slate-800 text-sm">Food & Drinks Bar</h4>
               <p className="text-xs text-slate-400">Menu prices for the charity grill tent</p>
+            </div>
+          </div>
+          <span className="text-slate-300 group-hover:text-emerald-500 font-bold transition-colors">→</span>
+        </Link>
+
+        {/* Button 4: Rules */}
+        <Link
+          to="/rules"
+          className="flex items-center justify-between bg-white hover:bg-slate-50 border border-slate-100 p-4 rounded-xl shadow-sm transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-2xl bg-emerald-500/10 p-2 rounded-lg">📜</span>
+            <div className="text-left">
+              <h4 className="font-bold text-slate-800 text-sm">Game Rules</h4>
+              <p className="text-xs text-slate-400">Tournament rules and regulations</p>
             </div>
           </div>
           <span className="text-slate-300 group-hover:text-emerald-500 font-bold transition-colors">→</span>

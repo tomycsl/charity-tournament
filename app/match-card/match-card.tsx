@@ -56,7 +56,7 @@ export default function MatchCard({ match, groupLabel }: MatchCardProps) {
       <div className="grid grid-cols-7 items-center text-sm font-bold text-slate-800">
 
         {/* Team A Column Layout */}
-        <div className={`col-span-2 text-right truncate flex flex-col items-end ${isPlayed && numscoreHome < numscoreAway ? 'text-slate-400 font-medium' : 'text-slate-800'}`}>
+        <div className={`text-[11px] col-span-2 text-right truncate flex flex-col items-end ${isPlayed && numscoreHome < numscoreAway ? 'text-slate-400 font-medium' : 'text-slate-800'}`}>
           <span>{match.home}</span>
           {/* Optional separate penalty sub-label */}
           {isPlayed && match.penaltiesA && (
@@ -78,7 +78,7 @@ export default function MatchCard({ match, groupLabel }: MatchCardProps) {
         </div>
 
         {/* Team B Column Layout */}
-        <div className={`col-span-2 text-left truncate flex flex-col items-start ${isPlayed && numscoreAway < numscoreHome ? 'text-slate-400 font-medium' : 'text-slate-800'}`}>
+        <div className={`text-[11px] col-span-2 text-left truncate flex flex-col items-start ${isPlayed && numscoreAway < numscoreHome ? 'text-slate-400 font-medium' : 'text-slate-800'}`}>
           <span>{match.away}</span>
           {/* Optional separate penalty sub-label */}
           {isPlayed && match.penaltiesB && (

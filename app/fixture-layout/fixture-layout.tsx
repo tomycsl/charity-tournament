@@ -1,5 +1,7 @@
 import { Outlet, NavLink, useLocation, useLoaderData } from 'react-router';
-import { type TournamentWorkbook, type Match } from '../types/tournament.types';
+import { type TournamentWorkbook, type Match, type TeamMap } from '../types/tournament.types';
+import { TeamProvider } from '~/context/team-context';
+import ChampionsShowcase from '~/components/champion-showcase';
 
 export async function clientLoader(): Promise<TournamentWorkbook> {
   const SPREADSHEET_ID = "12tGswY3H541_NTCQJPslBS93IscO3UnX__sje1Bc69Q";
@@ -16,7 +18,10 @@ export async function clientLoader(): Promise<TournamentWorkbook> {
     "Men Group C!B3:I7",   // 6: Men Group C Standings Table
     "Men Group C!L2:Q8",   // 7: Men Group C Fixtures
     "Playoffs!V2:AE9",     // 8: Men Playoffs
-    "Playoffs!V14:AE17"     // 9: Women Playoffs
+    "Playoffs!V14:AE17",   // 9: Women Playoffs
+    "Teams!A1:B18",        // 10: Team Names & Badge Mappings
+    "Playoffs!K11:M12",    // 11: Men Playoffs Champion
+    "Playoffs!G28:I29"     // 12: Women Playoffs Champion
   ];
 
   const rangeParams = ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&');
@@ -41,15 +46,49 @@ export async function clientLoader(): Promise<TournamentWorkbook> {
     });
   };
 
-  // --- Map your raw tab data into our structural state layout ---
+  const parseTeamMap = (rows: string[][]): TeamMap => {
+    const map: TeamMap = {};
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row && row[0] && row[1]) {
+        const teamName = row[0].trim();
+        const badgeFile = row[1].trim();
+        if (teamName) {
+          map[teamName] = badgeFile;
+        }
+      }
+    }
+
+    return map;
+  };
+
+  const parseChampion = (rows: string[][]): string => {
+    if (!rows || rows.length === 0) return "";
+    const [teamA, teamB] = rows;
+
+    if (teamA.length < 2) return '';
+
+    if (teamA[1] > teamB[1]) {
+      return teamA[0];
+    } else if (teamB[1] > teamA[1]) {
+      return teamB[0];
+    } else if (teamA[2] > teamB[2]) {
+      return teamA[0];
+    } else {
+      return teamB[0];
+    }
+  };
+
   return {
+    teamMap: parseTeamMap(valueRanges[10].values),
     women: {
       group: {
         name: "Women's Group",
         standings: parseSheetMatrix(valueRanges[0].values), // Adjust ranges based on your row counts
         fixtures: parseSheetMatrix(valueRanges[1].values) as Match[]
       },
-      playoff: parseSheetMatrix(valueRanges[9].values) as Match[] // Women Playoffs
+      playoff: parseSheetMatrix(valueRanges[9].values) as Match[],
+      champion: parseChampion(valueRanges[12].values) as string
     },
     men: {
       groups: [
@@ -69,7 +108,8 @@ export async function clientLoader(): Promise<TournamentWorkbook> {
           fixtures: parseSheetMatrix(valueRanges[7].values) as Match[]
         },
       ],
-      playoff: parseSheetMatrix(valueRanges[8].values) as Match[] // Quarterfinals grid matrix
+      playoff: parseSheetMatrix(valueRanges[8].values) as Match[],
+      champion: parseChampion(valueRanges[11].values) as string
     }
   };
 }
@@ -84,46 +124,55 @@ export default function FixturesLayout() {
     }`;
 
   return (
-    <div className="space-y-4">
-      {/* High-Level Gender Selector Toggles */}
-      <div className="flex bg-slate-200 p-1 rounded-xl">
-        <NavLink
-          to="fixture/men/group-a"
-          className={`flex-1 py-2 text-center text-xs font-black uppercase tracking-wider rounded-lg transition-all ${isMen ? 'bg-[#74ACDF] text-white shadow-sm' : 'text-slate-500'
-            }`}
-        >
-          Men's Cup
-        </NavLink>
-        <NavLink
-          to="fixture/women/group"
-          className={`flex-1 py-2 text-center text-xs font-black uppercase tracking-wider rounded-lg transition-all ${!isMen ? 'bg-[#74ACDF] text-white shadow-sm' : 'text-slate-500'
-            }`}
-        >
-          Women's Cup
-        </NavLink>
-      </div>
+    <TeamProvider teams={workbookData.teamMap}>
+      <div className="space-y-4">
 
-      {/* Secondary Contextual Tab Strip */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-        {isMen ? (
-          <>
-            <NavLink to="fixture/men/group-a" className={tabClass}>Group A</NavLink>
-            <NavLink to="fixture/men/group-b" className={tabClass}>Group B</NavLink>
-            <NavLink to="fixture/men/group-c" className={tabClass}>Group C</NavLink>
-            <NavLink to="fixture/men/playoffs" className={tabClass}>🏆 Playoffs</NavLink>
-          </>
-        ) : (
-          <>
-            <NavLink to="fixture/women/group" className={tabClass}>Group Stage</NavLink>
-            <NavLink to="fixture/women/playoffs" className={tabClass}>🏆 Playoffs</NavLink>
-          </>
-        )}
-      </div>
+        {/* High-Level Gender Selector Toggles */}
+        <div className="flex bg-slate-200 p-1 rounded-xl">
+          <NavLink
+            to="fixture/men/group-a"
+            className={`flex-1 py-2 text-center text-xs font-black uppercase tracking-wider rounded-lg transition-all ${isMen ? 'bg-[#74ACDF] text-white shadow-sm' : 'text-slate-500'
+              }`}
+          >
+            Men's Cup
+          </NavLink>
+          <NavLink
+            to="fixture/women/group"
+            className={`flex-1 py-2 text-center text-xs font-black uppercase tracking-wider rounded-lg transition-all ${!isMen ? 'bg-[#74ACDF] text-white shadow-sm' : 'text-slate-500'
+              }`}
+          >
+            Women's Cup
+          </NavLink>
+        </div>
 
-      {/* 2. Render child routes and inject the workbook data context safely */}
-      <div className="mt-2">
-        <Outlet context={workbookData} />
+        {/* ChampionShowcase */}
+        {(workbookData.men.champion || workbookData.women.champion) && <ChampionsShowcase
+          menWinner={workbookData.men.champion}
+          womenWinner={workbookData.women.champion}
+        />}
+
+        {/* Secondary Contextual Tab Strip */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {isMen ? (
+            <>
+              <NavLink to="fixture/men/group-a" className={tabClass}>Group A</NavLink>
+              <NavLink to="fixture/men/group-b" className={tabClass}>Group B</NavLink>
+              <NavLink to="fixture/men/group-c" className={tabClass}>Group C</NavLink>
+              <NavLink to="fixture/men/playoffs" className={tabClass}>🏆 Playoffs</NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink to="fixture/women/group" className={tabClass}>Group Stage</NavLink>
+              <NavLink to="fixture/women/playoffs" className={tabClass}>🏆 Playoffs</NavLink>
+            </>
+          )}
+        </div>
+
+        {/* 2. Render child routes and inject the workbook data context safely */}
+        <div className="mt-2">
+          <Outlet context={workbookData} />
+        </div>
       </div>
-    </div>
+    </TeamProvider>
   );
 }
