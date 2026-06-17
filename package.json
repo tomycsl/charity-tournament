@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build && cp build/client/index.html build/client/404.html",
+    "build": "react-router build && cp build/client/index.html build/client/404.html && echo 'charity-tournament.argentinafc.org' > build/client/CNAME",
     "start": "react-router-serve ./build/server/index.js"
   },
   "dependencies": {
