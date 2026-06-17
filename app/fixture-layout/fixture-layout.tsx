@@ -4,8 +4,8 @@ import { TeamProvider } from '~/context/team-context';
 import ChampionsShowcase from '~/components/champion-showcase';
 
 export async function clientLoader(): Promise<TournamentWorkbook> {
-  const SPREADSHEET_ID = "12tGswY3H541_NTCQJPslBS93IscO3UnX__sje1Bc69Q";
-  const API_KEY = "AIzaSyBqMQJPxjmapeDtXB8RD-TIx0Oj7riM_Rk";
+  const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
+  const API_KEY = import.meta.env.VITE_API_KEY;
 
   // Define every single range/tab name you need to fetch from the sheet
   const ranges = [
