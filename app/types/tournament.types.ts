@@ -1,3 +1,9 @@
+export type FixtureData = {
+  teamMap: TeamMap;
+  women: { group: GroupData; playoff: Match[]; champion: string };
+  men: { groups: GroupData[]; playoff: Match[]; champion: string };
+}
+
 export interface Match {
   id: string;
   time: string;
@@ -16,10 +22,33 @@ export interface GroupData {
   fixtures: Match[];
 }
 
-export interface TournamentWorkbook {
-  teamMap: TeamMap;
-  women: { group: GroupData; playoff: Match[]; champion: string };
-  men: { groups: GroupData[]; playoff: Match[]; champion: string };
+export type TeamMap = Record<string, string>;
+
+export type FoodItem = {
+  item: string;
+  category: string;
+  price: string;
 }
 
-export type TeamMap = Record<string, string>;
+export type FoodMenu = {
+  items: FoodItem[];
+}
+
+export type RaisedData = {
+  totalRaised: string;
+}
+
+export type TimelineEvent = {
+  time: string;
+  event: string;
+  isKeyEvent?: string;
+};
+
+export type TournamentData = {
+  fixtureData: FixtureData;
+  foodMenu: FoodMenu;
+  raisedData: RaisedData;
+  timeline: {
+    events: TimelineEvent[];
+  };
+}

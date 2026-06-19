@@ -1,12 +1,7 @@
-import { useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
 import Papa from 'papaparse';
-
-interface MenuItem {
-  item: string;
-  category: string;
-  price: string;
-}
+import type { FoodItem } from "../types/tournament.types";
+import { useTournament } from "~/context/tournament-context";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -15,21 +10,8 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export async function clientLoader() {
-  const MENU_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLWTwqaGJ0x1frdwUY_f9MeUjNchwk-rved49nv--GyIjotENFWZ7ED5HBnieFwVz4o43YKKhXFDcx/pub?gid=1199963315&single=true&output=csv";
-  const response = await fetch(MENU_CSV_URL);
-  const rawText = await response.text();
-
-  const parsed = Papa.parse(rawText, {
-    header: true,
-    skipEmptyLines: true
-  });
-
-  return parsed.data;
-}
-
 export default function Canteen() {
-  const menuItems = useLoaderData() as MenuItem[];
+  const { foodMenu } = useTournament();
 
   return (
     <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
@@ -38,7 +20,7 @@ export default function Canteen() {
 
       <div className="divide-y divide-slate-100">
 
-        {menuItems.map((menu, index) => (
+        {foodMenu.items.map((menu, index) => (
           <div key={index} className="flex justify-between py-3">
             <div>
               <h3 className="text-sm font-bold text-slate-800">{menu.item}</h3>

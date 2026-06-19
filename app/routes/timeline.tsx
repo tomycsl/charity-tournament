@@ -1,11 +1,5 @@
-import { useLoaderData } from "react-router";
+import { useTournament } from "~/context/tournament-context";
 import type { Route } from "./+types/home";
-import Papa from 'papaparse';
-
-export interface TimelineEvent {
-  item: string;
-  time: string;
-}
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -14,21 +8,8 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export async function clientLoader() {
-  const MATCHES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLWTwqaGJ0x1frdwUY_f9MeUjNchwk-rved49nv--GyIjotENFWZ7ED5HBnieFwVz4o43YKKhXFDcx/pub?gid=457745355&single=true&output=csv";
-  const response = await fetch(MATCHES_CSV_URL);
-  const rawText = await response.text();
-
-  const parsed = Papa.parse(rawText, {
-    header: true,
-    skipEmptyLines: true
-  });
-
-  return parsed.data;
-}
-
 export default function Timeline() {
-  const scheduleItems = useLoaderData() as TimelineEvent[];
+  const { timeline } = useTournament();
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-md mx-auto">
@@ -44,11 +25,8 @@ export default function Timeline() {
 
       {/* The Timeline Tree */}
       <div className="relative border-l-2 border-slate-100 pl-5 ml-2.5 space-y-6">
-        {scheduleItems.map((event, index) => {
-          // Subtle color accent changes to draw attention to lunchtime / tournament kickoffs
-          const isSpecialEvent =
-            event.item.toLowerCase().includes('begins') ||
-            event.item.toLowerCase().includes('awards');
+        {timeline.events.map((event, index) => {
+          const isSpecialEvent = event.isKeyEvent === 'YES';
 
           return (
             <div key={index} className="relative group transition-all">
@@ -72,7 +50,7 @@ export default function Timeline() {
                 {/* Event Name String */}
                 <h3 className={`text-sm font-bold tracking-tight transition-colors ${isSpecialEvent ? 'text-slate-900 text-base font-extrabold' : 'text-slate-700'
                   }`}>
-                  {event.item}
+                  {event.event}
                 </h3>
               </div>
 

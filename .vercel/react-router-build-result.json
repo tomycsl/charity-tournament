@@ -1,0 +1,213 @@
+{
+  "buildManifest": {
+    "routes": {
+      "root": {
+        "id": "root",
+        "file": "root.tsx",
+        "path": ""
+      },
+      "routes/home": {
+        "id": "routes/home",
+        "parentId": "root",
+        "file": "routes/home.tsx",
+        "path": "/"
+      },
+      "routes/canteen": {
+        "id": "routes/canteen",
+        "parentId": "root",
+        "file": "routes/canteen.tsx",
+        "path": "/canteen"
+      },
+      "routes/cause": {
+        "id": "routes/cause",
+        "parentId": "root",
+        "file": "routes/cause.tsx",
+        "path": "/cause"
+      },
+      "routes/rules": {
+        "id": "routes/rules",
+        "parentId": "root",
+        "file": "routes/rules.tsx",
+        "path": "/rules"
+      },
+      "fixture-layout/fixture-layout": {
+        "id": "fixture-layout/fixture-layout",
+        "parentId": "root",
+        "file": "./fixture-layout/fixture-layout.tsx"
+      },
+      "routes/fixture-men-group": {
+        "id": "routes/fixture-men-group",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-men-group.tsx",
+        "path": "fixture/men/:groupId"
+      },
+      "routes/fixture-men-playoffs": {
+        "id": "routes/fixture-men-playoffs",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-men-playoffs.tsx",
+        "path": "fixture/men/playoffs"
+      },
+      "routes/fixture-women-group": {
+        "id": "routes/fixture-women-group",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-women-group.tsx",
+        "path": "fixture/women/group"
+      },
+      "routes/fixture-women-playoffs": {
+        "id": "routes/fixture-women-playoffs",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-women-playoffs.tsx",
+        "path": "fixture/women/playoffs"
+      },
+      "routes/timeline": {
+        "id": "routes/timeline",
+        "parentId": "root",
+        "file": "routes/timeline.tsx",
+        "path": "/timeline"
+      }
+    }
+  },
+  "reactRouterConfig": {
+    "appDirectory": "C:/Users/tomyc/Projects/charity-tournament/app",
+    "basename": "/",
+    "buildDirectory": "C:/Users/tomyc/Projects/charity-tournament/build",
+    "future": {
+      "unstable_optimizeDeps": false,
+      "v8_passThroughRequests": true,
+      "v8_trailingSlashAwareDataRequests": true,
+      "unstable_previewServerPrerendering": false,
+      "v8_middleware": true,
+      "v8_splitRouteModules": true,
+      "v8_viteEnvironmentApi": true
+    },
+    "routes": {
+      "root": {
+        "id": "root",
+        "file": "root.tsx",
+        "path": ""
+      },
+      "routes/home": {
+        "id": "routes/home",
+        "parentId": "root",
+        "file": "routes/home.tsx",
+        "path": "/"
+      },
+      "routes/canteen": {
+        "id": "routes/canteen",
+        "parentId": "root",
+        "file": "routes/canteen.tsx",
+        "path": "/canteen"
+      },
+      "routes/cause": {
+        "id": "routes/cause",
+        "parentId": "root",
+        "file": "routes/cause.tsx",
+        "path": "/cause"
+      },
+      "routes/rules": {
+        "id": "routes/rules",
+        "parentId": "root",
+        "file": "routes/rules.tsx",
+        "path": "/rules"
+      },
+      "fixture-layout/fixture-layout": {
+        "id": "fixture-layout/fixture-layout",
+        "parentId": "root",
+        "file": "./fixture-layout/fixture-layout.tsx"
+      },
+      "routes/fixture-men-group": {
+        "id": "routes/fixture-men-group",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-men-group.tsx",
+        "path": "fixture/men/:groupId"
+      },
+      "routes/fixture-men-playoffs": {
+        "id": "routes/fixture-men-playoffs",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-men-playoffs.tsx",
+        "path": "fixture/men/playoffs"
+      },
+      "routes/fixture-women-group": {
+        "id": "routes/fixture-women-group",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-women-group.tsx",
+        "path": "fixture/women/group"
+      },
+      "routes/fixture-women-playoffs": {
+        "id": "routes/fixture-women-playoffs",
+        "parentId": "fixture-layout/fixture-layout",
+        "file": "routes/fixture-women-playoffs.tsx",
+        "path": "fixture/women/playoffs"
+      },
+      "routes/timeline": {
+        "id": "routes/timeline",
+        "parentId": "root",
+        "file": "routes/timeline.tsx",
+        "path": "/timeline"
+      }
+    },
+    "routeDiscovery": {
+      "mode": "initial"
+    },
+    "serverBuildFile": "index.js",
+    "serverModuleFormat": "esm",
+    "ssr": false,
+    "subResourceIntegrity": false,
+    "allowedActionOrigins": false,
+    "unstable_routeConfig": [
+      {
+        "id": "root",
+        "path": "",
+        "file": "root.tsx",
+        "children": [
+          {
+            "file": "routes/home.tsx",
+            "path": "/"
+          },
+          {
+            "file": "routes/canteen.tsx",
+            "path": "/canteen"
+          },
+          {
+            "file": "routes/cause.tsx",
+            "path": "/cause"
+          },
+          {
+            "file": "routes/rules.tsx",
+            "path": "/rules"
+          },
+          {
+            "file": "./fixture-layout/fixture-layout.tsx",
+            "children": [
+              {
+                "file": "routes/fixture-men-group.tsx",
+                "path": "fixture/men/:groupId"
+              },
+              {
+                "file": "routes/fixture-men-playoffs.tsx",
+                "path": "fixture/men/playoffs"
+              },
+              {
+                "file": "routes/fixture-women-group.tsx",
+                "path": "fixture/women/group"
+              },
+              {
+                "file": "routes/fixture-women-playoffs.tsx",
+                "path": "fixture/women/playoffs"
+              }
+            ]
+          },
+          {
+            "file": "routes/timeline.tsx",
+            "path": "/timeline"
+          }
+        ]
+      }
+    ]
+  },
+  "viteConfig": {
+    "build": {
+      "assetsDir": "assets"
+    }
+  }
+}

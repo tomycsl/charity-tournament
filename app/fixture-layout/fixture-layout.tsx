@@ -1,121 +1,10 @@
-import { Outlet, NavLink, useLocation, useLoaderData } from 'react-router';
-import { type TournamentWorkbook, type Match, type TeamMap } from '../types/tournament.types';
+import { Outlet, NavLink, useLocation } from 'react-router';
 import { TeamProvider } from '~/context/team-context';
 import ChampionsShowcase from '~/components/champion-showcase';
-
-export async function clientLoader(): Promise<TournamentWorkbook> {
-  const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
-  const API_KEY = import.meta.env.VITE_API_KEY;
-
-  // Define every single range/tab name you need to fetch from the sheet
-  const ranges = [
-    "Women Group A!B3:I8",  // 0: Women Standings Table
-    "Women Group A!L2:Q12",  // 1: Women Group Fixtures
-    "Men Group A!B3:I7",   // 2: Men Group A Standings Table
-    "Men Group A!L2:Q8",   // 3: Men Group A Fixtures
-    "Men Group B!B3:I7",   // 4: Men Group B Standings Table
-    "Men Group B!L2:Q8",   // 5: Men Group B Fixtures
-    "Men Group C!B3:I7",   // 6: Men Group C Standings Table
-    "Men Group C!L2:Q8",   // 7: Men Group C Fixtures
-    "Playoffs!V2:AE9",     // 8: Men Playoffs
-    "Playoffs!V14:AE17",   // 9: Women Playoffs
-    "Teams!A1:B18",        // 10: Team Names & Badge Mappings
-    "Playoffs!K11:M12",    // 11: Men Playoffs Champion
-    "Playoffs!G28:I29"     // 12: Women Playoffs Champion
-  ];
-
-  const rangeParams = ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&');
-  const URL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values:batchGet?${rangeParams}&key=${API_KEY}`;
-
-  const response = await fetch(URL);
-  const data = await response.json();
-
-  // valueRanges will contain an array of objects corresponding to your ranges array order
-  const valueRanges = data.valueRanges;
-
-  // Helper utility to convert raw Sheet matrix arrays into cleaner objects
-  const parseSheetMatrix = (rows: string[][]) => {
-    if (!rows || rows.length === 0) return [];
-    const headers = rows[0];
-    return rows.slice(1).map((row, idx) => {
-      const obj: any = {};
-      headers.forEach((header, index) => {
-        obj[header] = row[index] || "";
-      });
-      return obj;
-    });
-  };
-
-  const parseTeamMap = (rows: string[][]): TeamMap => {
-    const map: TeamMap = {};
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i];
-      if (row && row[0] && row[1]) {
-        const teamName = row[0].trim();
-        const badgeFile = row[1].trim();
-        if (teamName) {
-          map[teamName] = badgeFile;
-        }
-      }
-    }
-
-    return map;
-  };
-
-  const parseChampion = (rows: string[][]): string => {
-    if (!rows || rows.length === 0) return "";
-    const [teamA, teamB] = rows;
-
-    if (teamA.length < 2) return '';
-
-    if (teamA[1] > teamB[1]) {
-      return teamA[0];
-    } else if (teamB[1] > teamA[1]) {
-      return teamB[0];
-    } else if (teamA[2] > teamB[2]) {
-      return teamA[0];
-    } else {
-      return teamB[0];
-    }
-  };
-
-  return {
-    teamMap: parseTeamMap(valueRanges[10].values),
-    women: {
-      group: {
-        name: "Women's Group",
-        standings: parseSheetMatrix(valueRanges[0].values), // Adjust ranges based on your row counts
-        fixtures: parseSheetMatrix(valueRanges[1].values) as Match[]
-      },
-      playoff: parseSheetMatrix(valueRanges[9].values) as Match[],
-      champion: parseChampion(valueRanges[12].values) as string
-    },
-    men: {
-      groups: [
-        {
-          name: "Group A",
-          standings: parseSheetMatrix(valueRanges[2].values),
-          fixtures: parseSheetMatrix(valueRanges[3].values) as Match[]
-        },
-        {
-          name: "Group B",
-          standings: parseSheetMatrix(valueRanges[4].values),
-          fixtures: parseSheetMatrix(valueRanges[5].values) as Match[]
-        },
-        {
-          name: "Group C",
-          standings: parseSheetMatrix(valueRanges[6].values),
-          fixtures: parseSheetMatrix(valueRanges[7].values) as Match[]
-        },
-      ],
-      playoff: parseSheetMatrix(valueRanges[8].values) as Match[],
-      champion: parseChampion(valueRanges[11].values) as string
-    }
-  };
-}
+import { useTournament } from '~/context/tournament-context';
 
 export default function FixturesLayout() {
-  const workbookData = useLoaderData() as TournamentWorkbook;
+  const { fixtureData } = useTournament();
   const location = useLocation();
   const isMen = location.pathname.includes('/men');
 
@@ -124,7 +13,7 @@ export default function FixturesLayout() {
     }`;
 
   return (
-    <TeamProvider teams={workbookData.teamMap}>
+    <TeamProvider teams={fixtureData?.teamMap}>
       <div className="space-y-4">
 
         {/* High-Level Gender Selector Toggles */}
@@ -146,9 +35,9 @@ export default function FixturesLayout() {
         </div>
 
         {/* ChampionShowcase */}
-        {(workbookData.men.champion || workbookData.women.champion) && <ChampionsShowcase
-          menWinner={workbookData.men.champion}
-          womenWinner={workbookData.women.champion}
+        {(fixtureData?.men.champion || fixtureData?.women.champion) && <ChampionsShowcase
+          menWinner={fixtureData?.men.champion}
+          womenWinner={fixtureData?.women.champion}
         />}
 
         {/* Secondary Contextual Tab Strip */}
@@ -170,7 +59,7 @@ export default function FixturesLayout() {
 
         {/* 2. Render child routes and inject the workbook data context safely */}
         <div className="mt-2">
-          <Outlet context={workbookData} />
+          <Outlet context={fixtureData} />
         </div>
       </div>
     </TeamProvider>

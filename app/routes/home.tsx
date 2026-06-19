@@ -1,3 +1,4 @@
+import { useTournament } from "~/context/tournament-context";
 import type { Route } from "./+types/home";
 import { Link } from "react-router";
 
@@ -9,6 +10,8 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const { raisedData } = useTournament();
+
   return (
     <div className="space-y-6 max-w-md mx-auto animate-fade-in">
 
@@ -39,7 +42,7 @@ export default function Home() {
         </div>
         <div className="bg-white border border-slate-100 p-3 rounded-xl text-center shadow-sm">
           <span className="text-xl block mb-1">🍔</span>
-          <span className="block font-black text-slate-800 text-lg">£5000</span>
+          <span className="block font-black text-slate-800 text-lg">£{raisedData.totalRaised}</span>
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Raised</span>
         </div>
       </div>
