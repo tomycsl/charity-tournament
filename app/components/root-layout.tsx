@@ -4,6 +4,7 @@ import {
 } from "react-router";
 import { TournamentProvider } from "~/context/tournament-context";
 import type { Match, TeamMap, FoodItem, TimelineEvent } from "~/types/tournament.types";
+import { Analytics } from "@vercel/analytics/react"
 
 export async function clientLoader() {
   const sheetId = import.meta.env.VITE_SPREADSHEET_ID;
@@ -137,63 +138,66 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     }`;
 
   return (
-    <TournamentProvider data={{
-      fixtureData,
-      foodMenu,
-      raisedData: raisedData,
-      timeline
-    }}>
-      <div className="min-h-screen bg-slate-50 text-slate-900 pb-20 font-sans">
-        {/* Header Banner in Argentina Albiceleste Colors */}
-        <header className="relative bg-gradient-to-b from-[#74ACDF] via-[#74ACDF] to-white px-6 pt-6 pb-8 text-center shadow-sm border-b-4 border-[#F6B426]">
-          {/* Absolute centered Sun emblem decoration pattern behind text */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none overflow-hidden">
-            <span className="text-8xl">☀️</span>
-          </div>
+    <>
+      <Analytics />
+      <TournamentProvider data={{
+        fixtureData,
+        foodMenu,
+        raisedData: raisedData,
+        timeline
+      }}>
+        <div className="min-h-screen bg-slate-50 text-slate-900 pb-20 font-sans">
+          {/* Header Banner in Argentina Albiceleste Colors */}
+          <header className="relative bg-gradient-to-b from-[#74ACDF] via-[#74ACDF] to-white px-6 pt-6 pb-8 text-center shadow-sm border-b-4 border-[#F6B426]">
+            {/* Absolute centered Sun emblem decoration pattern behind text */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none overflow-hidden">
+              <span className="text-8xl">☀️</span>
+            </div>
 
-          <div className="relative z-10">
-            <h1 className="text-2xl font-black tracking-tight uppercase text-slate-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-              Charity 2026
-            </h1>
+            <div className="relative z-10">
+              <h1 className="text-2xl font-black tracking-tight uppercase text-slate-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+                Charity 2026
+              </h1>
 
-            <p className="inline-block bg-[#F6B426] text-slate-900 text-[10px] font-black uppercase tracking-widest mt-2 px-3 py-1 rounded-full shadow-sm border border-white">
-              Playing for Generando Puentes
-            </p>
-          </div>
-        </header>
+              <p className="inline-block bg-[#F6B426] text-slate-900 text-[10px] font-black uppercase tracking-widest mt-2 px-3 py-1 rounded-full shadow-sm border border-white">
+                Playing for Generando Puentes
+              </p>
+            </div>
+          </header>
 
-        <main className="max-w-md mx-auto p-4">
-          {children}
-        </main>
+          <main className="max-w-md mx-auto p-4">
+            {children}
+          </main>
 
-        {/* Persistent Bottom Mobile Navigation Bar */}
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 h-16 flex items-center justify-around px-2 shadow-lg max-w-md mx-auto z-50">
-          <NavLink to="/" className={navItemClass}>
-            <span className="text-lg">🏠</span>
-            <span className="text-[10px] tracking-tight">Home</span>
-          </NavLink>
+          {/* Persistent Bottom Mobile Navigation Bar */}
+          <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 h-16 flex items-center justify-around px-2 shadow-lg max-w-md mx-auto z-50">
+            <NavLink to="/" className={navItemClass}>
+              <span className="text-lg">🏠</span>
+              <span className="text-[10px] tracking-tight">Home</span>
+            </NavLink>
 
-          <NavLink to="/fixture/men/group-a" className={navItemClass}>
-            <span className="text-lg">⚽</span>
-            <span className="text-[10px] tracking-tight">Fixtures</span>
-          </NavLink>
+            <NavLink to="/fixture/men/group-a" className={navItemClass}>
+              <span className="text-lg">⚽</span>
+              <span className="text-[10px] tracking-tight">Fixtures</span>
+            </NavLink>
 
-          <NavLink to="/timeline" className={navItemClass}>
-            <span className="text-lg">🗓️</span>
-            <span className="text-[10px] tracking-tight">Timeline</span>
-          </NavLink>
+            <NavLink to="/timeline" className={navItemClass}>
+              <span className="text-lg">🗓️</span>
+              <span className="text-[10px] tracking-tight">Timeline</span>
+            </NavLink>
 
-          <NavLink to="/canteen" className={navItemClass}>
-            <span className="text-lg">🍔</span>
-            <span className="text-[10px] tracking-tight">Canteen</span>
-          </NavLink>
+            <NavLink to="/canteen" className={navItemClass}>
+              <span className="text-lg">🍔</span>
+              <span className="text-[10px] tracking-tight">Canteen</span>
+            </NavLink>
 
-          <NavLink to="/cause" className={navItemClass}>
-            <span className="text-lg">❤️</span>
-            <span className="text-[10px] tracking-tight">Cause</span>
-          </NavLink>
-        </nav>
-      </div>
-    </TournamentProvider>
+            <NavLink to="/cause" className={navItemClass}>
+              <span className="text-lg">❤️</span>
+              <span className="text-[10px] tracking-tight">Cause</span>
+            </NavLink>
+          </nav>
+        </div>
+      </TournamentProvider>
+    </>
   );
 }
